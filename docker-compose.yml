@@ -1,0 +1,25 @@
+version: "3.9"
+volumes:
+  db-store:
+services:
+  db:
+    image: postgres:11-alpine
+    ports:
+      - target: 5432
+        published: ${DB_PORT:-5432}
+        protocol: tcp
+        mode: host
+    volumes:
+      - type: volume
+        source: db-store
+        target: /var/lib/psql
+        volume:
+          nocopy: true
+    container_name: frourio-sample.db
+    environment:
+      - POSTGRES_DB=${DB_NAME:-dev}
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASS:-postgres}
+      - TZ=Asia/Tokyo
+      - PGTZ=Asia/Tokyo
+      - LANG=ja_JP.utf8
